@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Foundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">
+            <span class="mark-blue"></span><span class="mark-white"></span
+            ><span class="mark-red"></span><span class="mark-green"></span>
+          </div>
+          <div>
+            <p class="eyebrow">Studio / 01</p>
+            <h1>Xolst Foundry</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button
+            class="icon-button"
+            id="undoButton"
+            type="button"
+            title="Undo (Ctrl/Cmd + Z)"
+            aria-label="Undo"
+          >
+            ↶
+          </button>
+          <button
+            class="icon-button"
+            id="redoButton"
+            type="button"
+            title="Redo (Ctrl/Cmd + Shift + Z)"
+            aria-label="Redo"
+          >
+            ↷
+          </button>
+          <span class="divider"></span>
+          <button class="secondary-button" id="clearButton" type="button">
+            Xolstni tozalash
+          </button>
+          <button class="primary-button" id="exportButton" type="button">
+            <span class="download-icon">↓</span> Eksport qilish
+          </button>
+        </div>
+      </header>
+      <nav class="menu-bar" aria-label="Application menu">
+        <div class="menu-item">
+          <button class="menu-trigger" type="button" aria-expanded="false">
+            Fayl <span>⌄</span>
+          </button>
+          <div class="menu-dropdown">
+            <button data-menu-action="new" type="button">
+              <span>Yangi xolst</span><kbd>Ctrl/Cmd + N</kbd>
+            </button>
+            <button data-menu-action="import" type="button">
+              <span>Rasmni import qilish</span><kbd>Ctrl/Cmd + O</kbd>
+            </button>
+            <button data-menu-action="save" type="button">
+              <span>Mahalliy saqlash</span><kbd>Ctrl/Cmd + S</kbd>
+            </button>
+            <span class="menu-separator"></span
+            ><button data-menu-action="export-png" type="button">
+              <span>PNG sifatida eksport qilish</span><kbd>PNG</kbd></button
+            ><button data-menu-action="export-jpeg" type="button">
+              <span>JPEG sifatida eksport qilish</span><kbd>JPEG</kbd>
+            </button>
+          </div>
+        </div>
+        <div class="menu-item">
+          <button class="menu-trigger" type="button" aria-expanded="false">
+            Tahrirlash <span>⌄</span>
+          </button>
+          <div class="menu-dropdown">
+            <button data-menu-action="undo" type="button">
+              <span>Orqaga qaytish</span><kbd>Ctrl/Cmd + Z</kbd></button
+            ><button data-menu-action="redo" type="button">
+              <span>Qayta bajarish</span><kbd>Ctrl/Cmd + Shift + Z</kbd></button
+            ><span class="menu-separator"></span
+            ><button data-menu-action="clear" type="button">
+              <span>Xolstni tozalash</span><kbd>⌫</kbd>
+            </button>
+          </div>
+        </div>
+        <div class="menu-item">
+          <button class="menu-trigger" type="button" aria-expanded="false">
+            Ko'rinish <span>⌄</span>
+          </button>
+          <div class="menu-dropdown">
+            <button data-menu-action="grid" type="button">
+              <span>Canvas panjarasi</span
+              ><span class="menu-check" id="gridCheck">✓</span>
+            </button>
+          </div>
+        </div>
+        <div class="menu-item">
+          <button class="menu-trigger" type="button" aria-expanded="false">
+            Yordam <span>⌄</span>
+          </button>
+          <div class="menu-dropdown help-dropdown">
+            <p><strong>Xolst Foundry</strong></p>
+            <p>
+              Chap tomondagi asboblar bilan chizish mumkin. Tez tanlov uchun
+              <kbd>B</kbd>, <kbd>E</kbd>, <kbd>L</kbd>, <kbd>R</kbd>,
+              <kbd>O</kbd>, <kbd>F</kbd> va <kbd>I</kbd> klaviaturalaridan
+              foydalaning.
+            </p>
+          </div>
+        </div>
+      </nav>
+      <input
+        id="importInput"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        hidden
+      />
+
+      <section class="workspace">
+        <aside class="sidebar left-sidebar" aria-label="Drawing tools">
+          <div class="panel-heading">
+            <span>Asboblar</span><span class="panel-index">01</span>
+          </div>
+          <div class="tool-stack">
+            <button class="tool-button active" data-tool="brush" type="button">
+              <span class="tool-icon">✎</span><span>Cho'tka</span><kbd>B</kbd>
+            </button>
+            <button class="tool-button" data-tool="eraser" type="button">
+              <span class="tool-icon">⌫</span><span>O'chirg'ich</span
+              ><kbd>E</kbd>
+            </button>
+            <button class="tool-button" data-tool="line" type="button">
+              <span class="tool-icon">╱</span><span>Chiziq</span><kbd>L</kbd>
+            </button>
+            <button class="tool-button" data-tool="rectangle" type="button">
+              <span class="tool-icon">□</span><span>To'g'ri to'rtburchak</span
+              ><kbd>R</kbd>
+            </button>
+            <button class="tool-button" data-tool="ellipse" type="button">
+              <span class="tool-icon">○</span><span>Ellips</span><kbd>O</kbd>
+            </button>
+            <button class="tool-button" data-tool="fill" type="button">
+              <span class="tool-icon">▧</span><span>To'ldirish</span
+              ><kbd>F</kbd>
+            </button>
+            <button class="tool-button" data-tool="picker" type="button">
+              <span class="tool-icon">⌾</span><span>Rang tanlovchi</span
+              ><kbd>I</kbd>
+            </button>
+          </div>
+          <div class="control-group">
+            <div class="control-label">
+              <span>Cho'tka hajmi</span><output id="sizeOutput">12 px</output>
+            </div>
+            <input id="sizeInput" type="range" min="1" max="80" value="12" />
+            <div class="range-ends"><span>1</span><span>80</span></div>
+          </div>
+          <div class="control-group color-group">
+            <div class="control-label">
+              <span>Rang</span
+              ><span class="hex-value" id="hexOutput">#E9593D</span>
+            </div>
+            <label class="color-picker-wrap" for="colorInput"
+              ><input id="colorInput" type="color" value="#E9593D" /><span
+                class="color-swatch"
+                id="swatch"
+              ></span
+              ><span class="picker-caption">Rang tanlash</span></label
+            >
+          </div>
+          <div class="control-group">
+            <div class="control-label"><span>Tasodifiy ranglar</span></div>
+            <div class="swatches" id="swatches">
+              <button
+                class="swatch selected"
+                style="--swatch: #e9593d"
+                data-color="#E9593D"
+                type="button"
+                aria-label="Coral red"
+              ></button>
+              <button
+                class="swatch"
+                style="--swatch: #f4b942"
+                data-color="#F4B942"
+                type="button"
+                aria-label="Sun yellow"
+              ></button>
+              <button
+                class="swatch"
+                style="--swatch: #2a9d8f"
+                data-color="#2A9D8F"
+                type="button"
+                aria-label="Teal"
+              ></button>
+              <button
+                class="swatch"
+                style="--swatch: #2d5bff"
+                data-color="#2D5BFF"
+                type="button"
+                aria-label="Blue"
+              ></button>
+              <button
+                class="swatch"
+                style="--swatch: #252525"
+                data-color="#252525"
+                type="button"
+                aria-label="Ink black"
+              ></button>
+              <button
+                class="swatch"
+                style="--swatch: #f3efe8"
+                data-color="#F3EFE8"
+                type="button"
+                aria-label="Warm white"
+              ></button>
+            </div>
+          </div>
+          <div class="sidebar-note">
+            <span class="status-dot"></span><span>Avto saqlash tayyor</span>
+          </div>
+        </aside>
+
+        <section class="canvas-area">
+          <div class="canvas-toolbar">
+            <div class="canvas-meta">
+              <span class="live-dot"></span
+              ><input
+                id="canvasName"
+                class="canvas-name-input"
+                value="Sarlavhasiz xolst"
+                aria-label="Xolst nomi"
+                maxlength="80"
+              />
+            </div>
+            <span class="canvas-size">800 × 600 px</span>
+          </div>
+          <div class="canvas-stage" id="canvasStage">
+            <canvas
+              id="drawingCanvas"
+              width="800"
+              height="600"
+              aria-label="Drawing canvas"
+            ></canvas>
+            <div class="empty-state" id="emptyState">
+              <span class="empty-icon">＋</span
+              ><strong>Belgi bilan boshlang</strong
+              ><span>Asbob tanlang va xolstda chiza boshlang</span>
+            </div>
+          </div>
+          <div class="canvas-footer">
+            <span>Canvas 01</span><span id="historyStatus">0 ta o'zgarish</span
+            ><span>PNG / JPEG tayyor</span>
+          </div>
+        </section>
+
+        <aside class="sidebar right-sidebar" aria-label="Export settings">
+          <div class="panel-heading">
+            <span>Eksport</span><span class="panel-index">02</span>
+          </div>
+          <div class="export-preview">
+            <canvas
+              id="previewCanvas"
+              width="800"
+              height="600"
+              aria-label="Live artwork preview"
+            ></canvas
+            ><span>Jonli kuzatuv</span>
+          </div>
+          <div class="control-group format-group">
+            <div class="control-label"><span>Format</span></div>
+            <div class="format-switch" role="group" aria-label="Export format">
+              <button
+                class="format-button active"
+                data-format="png"
+                type="button"
+              >
+                PNG</button
+              ><button class="format-button" data-format="jpeg" type="button">
+                JPEG
+              </button>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="control-label">
+              <span>Sifat</span><output id="qualityOutput">92%</output>
+            </div>
+            <input
+              id="qualityInput"
+              type="range"
+              min="10"
+              max="100"
+              value="92"
+            />
+            <div class="range-ends"><span>10</span><span>100</span></div>
+          </div>
+          <button class="export-button" id="downloadButton" type="button">
+            <span>San'at asarni yuklab oling</span><span>↓</span>
+          </button>
+          <p class="export-hint">
+            Sizning san'at asaringiz brauzerda mahalliy ravishda renderlanadi va
+            hech qachon sizning qurilmangizdan chiqmaydi.
+          </p>
+        </aside>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

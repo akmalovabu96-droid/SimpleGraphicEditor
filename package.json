@@ -1,0 +1,13 @@
+{
+  "name": "canvas-foundry",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.9.6",
+    "prettier-eslint": "^16.4.2"
+  }
+}
